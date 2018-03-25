@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>js 无缝滚动（向上）</title>
+    <style type="text/css">
+    *{
+    	margin:0;
+    	padding:0;
+    }
+    ul,
+    ul li {
+    	list-style: none;
+    }
+    #marquee {
+        position: relative;
+        height: 300px;
+        width: 200px;
+        overflow: hidden;
+        border: 10px solid #369;
+    }
+
+    #marquee img {
+        display: block;
+    }
+
+    #marquee dd {
+        margin: 0px;
+        padding: 0px;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- 参考地址：http://www.cnblogs.com/rubylouvre/archive/2009/10/01/1577219.html -->
+    <!-- html 结构 -->
+    <div id="marquee">
+    	<ul id="main-box">
+    		<li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/rubylouvre/199042/o_s017.jpg" alt="无缝滚动" /></a></li>
+    		<li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/rubylouvre/199042/o_s018.jpg" alt="无缝滚动" /></a></li>
+    		<li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/rubylouvre/199042/o_s019.jpg" alt="无缝滚动" /></a></li>
+    		<li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/rubylouvre/199042/o_s020.jpg" alt="无缝滚动" /></a></li>
+    		<li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/rubylouvre/199042/o_s021.jpg" alt="无缝滚动" /></a></li>
+    		<li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/rubylouvre/199042/o_s022.jpg" alt="无缝滚动" /></a></li>
+    		<li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/rubylouvre/199042/o_s023.jpg" alt="无缝滚动" /></a></li>
+    	</ul>
+    	<ul id="clone-box"></ul>
+    </div>
+    <!-- js 代码 -->
+    <script>
+    var Marquee = function(id,mainBox,cloneBox) {
+        try { document.execCommand("BackgroundImageCache", false, true); } catch (e) {};
+        var container = document.getElementById(id),
+            original = document.getElementById(mainBox),
+            clone = document.getElementById(cloneBox),
+            speed = 10;
+        clone.innerHTML = original.innerHTML;
+        var rolling = function() { 
+            if (container.scrollTop == clone.offsetTop) {
+                container.scrollTop = 0;
+            } else {
+                container.scrollTop++;
+            }
+        }
+        var timer = setInterval(rolling, speed) //设置定时器
+        container.onmouseover = function() { clearInterval(timer) } //鼠标移到marquee上时，清除定时器，停止滚动
+        container.onmouseout = function() { timer = setInterval(rolling, speed) } //鼠标移开时重设定时器
+    }
+    window.onload = function() {
+        Marquee("marquee","main-box","clone-box");
+    }
+    </script>
+</body>
+
+</html>
