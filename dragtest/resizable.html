@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <style>
+        #box {
+            width: 200px;
+            height: 200px;
+            background: green;
+            color: #fff;
+        }
+        #mirror {
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .ui-icon {
+            width: 9px;
+            height: 9px;
+        }
+        .ui-resizable-n {
+            top: 0;
+        }
+        .ui-resizable-e {
+            right: 0;
+        }
+        .ui-resizable-s {
+            bottom: 0;
+        }
+        .ui-resizable-w {
+            left: 0;
+        }
+        .ui-resizable-ne {
+            top: -4px;
+            right: -4px;
+        }
+        .ui-resizable-se {
+            width: 9px;
+            height: 9px;
+            right: -4px;
+            bottom:-4px;
+        }
+        .ui-resizable-sw {
+            left: -4px;
+            bottom:-4px;
+        }
+        .ui-resizable-nw {
+            left:-4px;
+            top:-4px;
+        }
+        .ui-resizable-handle-hover:after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border: 1px solid blue;
+            border-radius: 50%;
+        }
+        .ui-resizable-handle-hover:before {
+            content: "";
+            border: 1px dashed transparent;
+            position: absolute;
+        }
+
+        .ui-resizable-n.ui-resizable-handle-hover:before,
+        .ui-resizable-s.ui-resizable-handle-hover:before {
+            left: 0;
+            right: 0;
+            height: 0;
+            border-color: blue;
+        }
+        .ui-resizable-w.ui-resizable-handle-hover:before,
+        .ui-resizable-e.ui-resizable-handle-hover:before {
+            bottom: 0;
+            top: 0;
+            width: 0;
+            border-color: blue;
+        }
+        .ui-resizable-n.ui-resizable-handle-hover:before {
+            top: 0;
+        }
+        .ui-resizable-s.ui-resizable-handle-hover:before {
+            bottom: 0;
+        }
+        .ui-resizable-w.ui-resizable-handle-hover:before {
+            left: 0;
+        }
+        .ui-resizable-e.ui-resizable-handle-hover:before {
+            right: 0;
+        }
+
+        .ui-resizable-n.ui-resizable-handle-hover:after {
+            top: -3px;
+            right: calc(50% - 3px);
+        }
+        .ui-resizable-e.ui-resizable-handle-hover:after {
+            top: calc(50% - 3px);
+            right: -3px;
+        }
+        .ui-resizable-s.ui-resizable-handle-hover:after {
+            left: calc(50% - 3px);
+            bottom: -3px;
+        }
+        .ui-resizable-w.ui-resizable-handle-hover:after {
+            top: calc(50% - 3px);
+            left: -3px;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        可调整大小的组件
+    </div>
+
+    <div id="mirror">相关联的元素尺寸</div>
+
+    <script>
+        /*
+        *   n top
+        *   e right
+        *   s bottom
+        *   w left
+        *   ne top-right
+        *   se  bottom-right
+        *   sw bottom-left
+        *   nw top-left
+        */
+        $("#box").resizable({
+            alsoResize: "#mirror",
+            handles: 'n, e, s, w, ne, se, sw, nw',
+        });
+        $(".ui-resizable-handle").hover(function(){
+            $(".ui-resizable-handle").addClass('ui-resizable-handle-hover')
+        }, function () {
+            $(".ui-resizable-handle").removeClass('ui-resizable-handle-hover')
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/editor.js"></script>
+</head>
+<body>
+    <div id="froala-editor">
+        <p>The buttons below will destroy and init the rich text editor again.</p>
+      </div>
+      <p>
+        <a id="btn-destroy" href="#" class="btn r-btn highlight text-small">Destroy</a>
+        <a id="btn-init" href="#" class="btn r-btn text-small">Init</a>
+      </p>
+
+
+      <script>
+        var editor;
+        var bool = false;
+      
+        // Destroy action.
+        document.querySelector('a#btn-destroy').addEventListener('click', function (e) {
+          e.preventDefault();
+          if (bool) {
+            editor.destroy()
+            bool = false
+          }
+        });
+      
+        // Initialize action.
+        document.querySelector('a#btn-init').addEventListener('click', function (e) {
+          e.preventDefault();
+          if (!bool) {
+            editor = new FroalaEditor('div#froala-editor')
+            bool = true
+          }
+        })
+      </script>
+</body>
+</html>

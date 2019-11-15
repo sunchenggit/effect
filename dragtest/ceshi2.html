@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+</head>
+<body>
+    <p id='drag'>请拖拽我</p>
+
+    <div id="app" style="width: 1000px; height: 400px; border: 1px solid red;">
+            <br>
+            <div class="app1" style="height:100px; border: 1px solid blue;">
+
+            </div>
+            <br>
+            <div class="app1" style="height:100px; border: 1px solid green;">
+
+                </div>
+    </div>
+
+    <script>
+        //  
+        function appendToParent(event, ui) {
+            console.log(1)
+            $(this).append(ui.helper.clone())
+        }
+        $("#drag").draggable({
+            helper: 'clone'
+        });
+        $('#app').droppable({
+            addClasses: false,
+            drop: function (event, ui) {
+                console.log(1)
+                $(this).append(ui.helper.clone())
+            }
+        })
+        $('.app1').droppable({
+            greedy: true,
+            drop:function (event, ui) {
+                console.log(2)
+                $(this).append(ui.helper.clone())
+            }
+        })
+    </script>
+</body>
+</html>

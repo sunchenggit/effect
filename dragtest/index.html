@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+</head>
+<body>
+    <ul>
+        <li id="draggable" class="ui-state-highlight">请拖拽我</li>
+    </ul>
+       
+    <ul id="sortable">
+        <li class="ui-state-default">Item 1</li>
+        <li class="ui-state-default">Item 2</li>
+        <li class="ui-state-default">Item 3</li>
+        <li class="ui-state-default">Item 4</li>
+        <li class="ui-state-default">Item 5</li>
+    </ul>
+
+    <script>
+    $(function() {
+        $( "#sortable" ).sortable({
+            revert: true,
+            helper: "clone",
+            placeholder: 'sortable-placeholder',
+        });
+        $( "#draggable" ).draggable({
+            connectToSortable: "#sortable",
+            helper: "clone",
+            revert: "invalid"
+        });
+        $( "ul, li" ).disableSelection();
+    });    
+    </script>
+</body>
+</html>

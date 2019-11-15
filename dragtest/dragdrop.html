@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <style>
+        #box {
+            width: 500px;
+            height: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid red;
+            position: relative;
+        }
+        .dragable {
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div id="drag" class="dragable">可拖拽元素</div>
+
+    <div id="box"></div>
+    
+    <script>
+        $('#drag').draggable({
+            helper: 'clone'
+        })
+        $("#box").droppable({
+            drop: function(event, ui) {
+                var top     = $(this).offset().top,
+                    left    = $(this).offset().left
+                    uiTop   = ui.position.top,
+                    uiLeft  = ui.position.left;
+                var finalLeft = (uiLeft - left) + 'px',
+                    finalTop  = (uiTop - top) + 'px';
+                var html = '<div class="dragable" style="left:'+finalLeft+'; top:'+finalTop+'">测试拖拽组件</div>'
+                $(this).append(html)
+            }
+        })
+    </script>
+</body>
+</html>

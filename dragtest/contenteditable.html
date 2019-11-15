@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+    <button id='btn'>按钮</button>
+    <button id='text'>这里是测试文字</button>
+    <script>
+        $('#btn').click(function(){
+            $("#text").attr('contenteditable', 'true').focus();
+            $("#text").blur(function(){
+                console.log($(this).text())
+            })
+        })
+        
+    </script>
+</body>
+</html>

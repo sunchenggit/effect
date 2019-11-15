@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <style>
+        ul {
+            list-style: none;
+        }
+        .ui-state-highlight {
+            border: 1px dashed blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="dragable">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum quidem aspernatur ea beatae optio ipsa saepe rerum eum maxime vitae sunt atque in omnis sed, neque id reiciendis quod provident?</p>
+    </div>
+
+    <ul id="sortable">
+        <li data-id="1">
+            <h3>1Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, illo eius placeat commodi assumenda nostrum dolorem accusamus aliquid expedita vitae molestias ipsam ipsum id exercitationem blanditiis consequuntur consectetur, nemo quos? Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa voluptatum pariatur officiis velit voluptate laborum quibusdam, tempora cupiditate numquam obcaecati a architecto beatae delectus rem dolorem molestiae. Incidunt, quibusdam quidem. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem sint quia hic quo ipsa eos molestias, sit porro dolor, officiis minima quibusdam mollitia similique nemo maxime asperiores labore nihil excepturi.</p>
+        </li>
+        <li data-id="2">
+            <h3>2Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, illo eius placeat commodi assumenda nostrum dolorem accusamus aliquid expedita vitae molestias ipsam ipsum id exercitationem blanditiis consequuntur consectetur, nemo quos?</p>
+        </li>
+        <li data-id="3">
+            <h3>3Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, illo eius placeat commodi assumenda nostrum dolorem accusamus aliquid expedita vitae molestias ipsam ipsum id exercitationem blanditiis consequuntur consectetur, nemo quos?</p>
+        </li>
+        <li data-id="4">
+            <h3>4Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, illo eius placeat commodi assumenda nostrum dolorem accusamus aliquid expedita vitae molestias ipsam ipsum id exercitationem blanditiis consequuntur consectetur, nemo quos?</p>
+        </li>
+    </ul>
+    <script>
+        $( "#dragable" ).draggable({
+            helper: 'clone',
+            connectToSortable: "#sortable",
+
+        });
+        $("#sortable").sortable({
+            forcePlaceholderSize: true,
+            helper: "clone",
+            cursor: 'move',
+            placeholder: 'ui-state-highlight',
+            start: function (event, ui) {
+                ui.placeholder.html('放到这里').removeAttr('style');
+                var html = ui.helper.clone();
+                $(html).css({
+                    'transform':'scale(0.25)',
+                    'transform-origin': 'left top'
+                })
+                ui.helper.hide()
+                $("body").append("<div class='ceshi'></div>")
+                $(".ceshi").append(html)
+            },
+            sort: function (event, ui) {
+                $(".ceshi").css({
+                    position: 'absolute',
+                    left: event.pageX + 'px',
+                    top: event.pageY + 'px'
+                });
+            },
+            stop: function (event, ui) {
+                $(".ceshi").remove()
+                var result = $(this).sortable('toArray', {attribute: 'data-id'});
+                console.log(result);
+            }
+        });
+    </script>
+</body>
+</html>
