@@ -9,12 +9,14 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
     <style>
-        #box {
+        .box {
             width: 500px;
             height: 400px;
             margin-left: auto;
             margin-right: auto;
             border: 1px solid red;
+            position: relative;
+            overflow: hidden;
         }
         .dragable {
             position: absolute;
@@ -22,18 +24,20 @@
     </style>
 </head>
 <body>
-    <div id="drag" class="dragable">可拖拽元素</div>
 
-    <div id="box"></div>
+    <div id="box1" class="box">
+        <div id="drag" class="dragable">可拖拽元素</div>
+    </div>
+
+    <div id="box2" class="box"></div>
     
     <script>
         $('#drag').draggable({
-            helper: 'clone'
+            revert: 'invalid' 
         })
-        $("#box").droppable({
+        $(".box").droppable({
             drop: function(event, ui) {
-                var html = ui.helper.clone();
-                $(this).append(html)
+                
             }
         })
     </script>

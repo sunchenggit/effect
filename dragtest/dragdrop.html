@@ -9,38 +9,135 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
     <style>
-        #box {
+        .box {
             width: 500px;
             height: 400px;
             margin-left: auto;
             margin-right: auto;
             border: 1px solid red;
             position: relative;
+            overflow: hidden;
+            display: inline-block;
         }
         .dragable {
             position: absolute;
+            white-space: nowrap;
+        }
+        .placeholder-a,
+        .placeholder-b {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(0,0,0,0.2);
+        }
+        .placeholder-a:after {
+            content: '模块已经被拖出！';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+        }
+        .placeholder-b:after {
+            content: '放在这里';
+            position: absolute;
+            left: 50%;
+            top: 50%;
         }
     </style>
 </head>
 <body>
-    <div id="drag" class="dragable">可拖拽元素</div>
 
-    <div id="box"></div>
+    <div id="box1" class="box">
+        <div id="drag" class="dragable">可拖拽元素</div>
+    </div>
+    <div id="box2" class="box"></div>
+    <div id="box3" class="box"></div>
     
     <script>
+        var placeholderA = '<div class="placeholder-a"></div>';
+        var placeholderB = '<div class="placeholder-b"></div>';
+        var preventEle;
+        var cloneUi;
+
+        function handleDrop (event, ui, ele) {
+            var preventEle = ui.draggable.parent();
+            // 判断当前可放置区域和当前元素是否一致，如果一致则表面还是在当前元素内移动，则返回空
+            // 如果不等则表明是在两个元素内移动，则进行下面的逻辑
+            if (ele.attr('id') == preventEle.attr('id')) return;
+
+            // 放置的时候，
+            // 1. 移出的可放置容器中删除占位元素
+            preventEle.find('.placeholder-a').remove();
+            // 2. 移出现在放置容器中的占位元素
+            ele.find('.placeholder-b').remove();
+            // 3. 计算样式，赋值给clone 出的元素，使其能根据鼠标放置的位置添加对应的组件
+            var finalLeft = event.pageX - ele.offset().left,
+                finalTop  = event.pageY - ele.offset().top;
+            ui.draggable.css({
+                top: finalTop,
+                left: finalLeft,
+                display: 'block'
+            });
+            ele.append(ui.draggable);
+            // 4. 移出组件拖拽赋值元素
+            $(".module-sortable-helper-wrap").remove();
+        }
+
+        function handleOver (event, ui, ele) {
+            var preventEle  = ui.draggable.parent();                                    // 获取到当前被拖拽元素的父级元素
+            // 判断当前可放置区域和当前元素是否一致，如果一致则表面还是在当前元素内移动，则返回空
+            // 如果不等则表明是在两个元素内移动，则进行下面的逻辑
+            if (ele.attr('id') == preventEle.attr('id')) {
+                preventEle.find('.placeholder-a').remove();
+                $(this).find('.placeholder-b').remove();
+                return
+            }
+
+            var cloneUi     = ui.draggable.clone().removeAttr('style');                 // 克隆一份可拖拽组件，移除自身样式
+            ui.draggable.hide();                                                    // 可拖拽元素隐藏
+
+            // 移出其他容器内的提示语
+            $('.placeholder-b').remove();
+            // 并当前可放置容器中显示可放置的提示语
+            ele.append(placeholderB); 
+            
+            // 将克隆出来的元素添加到 body 专门存放它的元素中，这里元素样式通过 当前拖拽元素的 drag 事件赋值
+            if ($(".module-sortable-helper-wrap").length > 0) return;
+            $("body").append("<div class='module-sortable-helper-wrap'></div>");
+            $(".module-sortable-helper-wrap").append(cloneUi);
+
+            // 模拟模块被拖出后，在放到第二个可放置容器时，之前的可放置容器显示提示语
+            if (preventEle.find('.placeholder-a').length > 0) return
+            preventEle.append(placeholderA);
+        }
+
+        // 测试 可拖拽组件在多个可放置容器内部放置
         $('#drag').draggable({
-            helper: 'clone'
+            revert: "invalid",              // 除了移动到可放置容器内外，移到其他地方后都会返回之前的地方
+            drag: function (event, ui) {
+                // 在组件拖拽的时候将其不断变化的位置信息赋值给，组件隐藏后克隆出来的组件集合
+                // 模拟组件拖出当前可放置区域，到另一个可放置区域的效果
+                if ($('.module-sortable-helper-wrap').length > 0) {
+                    $('.module-sortable-helper-wrap').css({
+                        left: ui.offset.left,
+                        top: ui.offset.top,
+                        position: 'absolute'
+                    })
+                }
+            }
         })
-        $("#box").droppable({
+
+        $(".box").droppable({
+            greedy: true,
+            over: function (event, ui) {
+                handleOver(event, ui, $(this))
+            },
+            out: function (event, ui){
+                
+            },
             drop: function(event, ui) {
-                var top     = $(this).offset().top,
-                    left    = $(this).offset().left
-                    uiTop   = ui.position.top,
-                    uiLeft  = ui.position.left;
-                var finalLeft = (uiLeft - left) + 'px',
-                    finalTop  = (uiTop - top) + 'px';
-                var html = '<div class="dragable" style="left:'+finalLeft+'; top:'+finalTop+'">测试拖拽组件</div>'
-                $(this).append(html)
+                handleDrop(event, ui, $(this))
             }
         })
     </script>

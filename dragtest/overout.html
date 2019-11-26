@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/jquery.min.js"></script>
+    <style>
+        #wrap {
+            width: 1000px;
+            height: 520px;
+            margin: 200px auto;
+            background: #ccc;
+        }
+        .inner {
+            width: 200px;
+            height: 200px;
+            margin: 20px;
+            display: inline-block;
+        }
+        #inner1 {
+            background: blue;
+        }
+        #inner2 {
+            background: yellow;
+        }
+        div.hover {
+            background: red !important;
+        }
+
+        [data-id] {
+            position: absolute;
+            z-index: -1;
+        }
+    </style>
+    
+</head>
+<body>
+    <div id="wrap">
+        <div class="inner" id="inner1">
+            <div data-id="inner1"></div>
+        </div>
+        <div class="inner" id="inner2">
+            <div data-id="inner2"></div>
+        </div>
+        <div data-id="wrap"></div>
+    </div>
+
+    <script>
+        $('div').mouseover(function(e){
+            // e.stopPropagation();
+            var _id = $(this).attr('id');
+            console.log(_id)
+            var _dataId = $(this).find('[data-id]').attr('data-id');
+            $('[data-id]').removeClass('hover');
+            $('[data-id='+_id+']').addClass('hover');
+            
+        })
+        $('div').mouseleave(function(){
+            var _id = $(this).attr('id');
+            $('[data-id='+_id+']').removeClass('hover');
+        })
+    </script>
+</body>
+</html>
